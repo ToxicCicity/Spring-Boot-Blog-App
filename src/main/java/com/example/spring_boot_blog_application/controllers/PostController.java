@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -37,24 +38,49 @@ public class PostController {
         }
     }
 
+    //old createNewPost and saveNewPost methods, replaced with the ones below (was causing every post to be created by the same user)
+//    @GetMapping("/posts/new")
+//    public String createNewPost(Model model) {
+//        Optional<Account> optionalAccount = accountService.findByEmail("user.user@domain.com");
+//        if(optionalAccount.isPresent()) {
+//            Account account = optionalAccount.get();
+//            Post post = new Post();
+//            post.setAccount(account);
+//            model.addAttribute("post", post);
+//            return "post_new";
+//        } else {
+//            return "404";
+//        }
+//    }
+//
+//    @PostMapping("/posts/new")
+//    public String saveNewPost(@ModelAttribute Post post) {
+//        postService.save(post);
+//        return "redirect:/posts/" + post.getId();
+//    }
+
     @GetMapping("/posts/new")
+    @PreAuthorize("isAuthenticated()")
     public String createNewPost(Model model) {
-        Optional<Account> optionalAccount = accountService.findByEmail("user.user@domain.com");
-        if(optionalAccount.isPresent()) {
-            Account account = optionalAccount.get();
-            Post post = new Post();
-            post.setAccount(account);
-            model.addAttribute("post", post);
-            return "post_new";
-        } else {
-            return "404";
-        }
+
+        Post post = new Post();
+        model.addAttribute("post", post);
+        return "post_new";
     }
 
     @PostMapping("/posts/new")
-    public String saveNewPost(@ModelAttribute Post post) {
+    @PreAuthorize("isAuthenticated()")
+    public String createNewPost(@ModelAttribute Post post, Principal principal) {
+        String authUsername = "anonymousUser";
+        if (principal != null) {
+            authUsername = principal.getName();
+        }
+
+        Account account = accountService.findByEmail(authUsername).orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        post.setAccount(account);
         postService.save(post);
-        return "redirect:/posts/" + post.getId();
+        return "redirect:/";
     }
 
     @GetMapping("/posts/{id}/edit")
