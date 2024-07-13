@@ -29,7 +29,7 @@ public class AccountController {
          if(optionalAccount.isPresent()) {
              Account account = optionalAccount.get();
              model.addAttribute("account", account);
-             List<Post> posts = postService.getAll();
+             List<Post> posts = postService.getAllByAccountId(id);
              model.addAttribute("posts", posts);
              return "account";
          } else {

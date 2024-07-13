@@ -23,6 +23,10 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    public List<Post> getAllByAccountId(Long accountId) {
+        return postRepository.findAllByAccountId(accountId);
+    }
+
     public Post save(Post post) {
         if(post.getId() == null) {
             post.setCreatedAt(LocalDateTime.now());
