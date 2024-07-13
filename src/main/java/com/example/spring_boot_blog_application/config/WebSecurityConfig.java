@@ -31,7 +31,8 @@ public class WebSecurityConfig {
     private static final String[] WHITELIST = {
         "/register",
         "/h2-console/*",
-        "/"
+        "/",
+        "/account/*/posts"
     };
 
     @Bean
