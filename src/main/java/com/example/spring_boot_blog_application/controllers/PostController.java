@@ -20,11 +20,14 @@ import java.util.Optional;
 @Controller
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+
+    public PostController(PostService postService, AccountService accountService) {
+        this.postService = postService;
+        this.accountService = accountService;
+    }
 
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {

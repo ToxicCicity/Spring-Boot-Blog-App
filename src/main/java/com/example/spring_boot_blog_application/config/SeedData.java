@@ -18,14 +18,17 @@ import java.util.Set;
 @Component
 public class SeedData implements CommandLineRunner {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
-    private AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
+
+    public SeedData(PostService postService, AccountService accountService, AuthorityRepository authorityRepository) {
+        this.postService = postService;
+        this.accountService = accountService;
+        this.authorityRepository = authorityRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {

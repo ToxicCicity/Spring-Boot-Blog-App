@@ -11,10 +11,13 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Account save(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
