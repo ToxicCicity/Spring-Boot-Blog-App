@@ -16,8 +16,11 @@ import java.util.stream.Collectors;
 @Component("userDetailsService")
 public class MyUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+
+    public MyUserDetailsService(AccountService accountService) {
+        this.accountService = accountService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

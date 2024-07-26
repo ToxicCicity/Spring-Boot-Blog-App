@@ -17,13 +17,16 @@ import java.util.Optional;
 @Controller
 public class AccountController {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
-     @GetMapping("/account/{id}/posts")
+    public AccountController(AccountService accountService, PostService postService) {
+        this.accountService = accountService;
+        this.postService = postService;
+    }
+
+    @GetMapping("/account/{id}/posts")
      public String getAccount(@PathVariable Long id, Model model) {
          Optional<Account> optionalAccount = accountService.getById(id);
          if(optionalAccount.isPresent()) {

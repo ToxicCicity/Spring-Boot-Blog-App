@@ -17,14 +17,13 @@ import java.util.Set;
 @Controller
 public class RegisterController {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
-    private AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
 
-    public RegisterController(AccountService accountService) {
+    public RegisterController(AccountService accountService, AuthorityRepository authorityRepository) {
         this.accountService = accountService;
+        this.authorityRepository = authorityRepository;
     }
 
     @GetMapping("/register")
