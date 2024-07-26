@@ -1,5 +1,6 @@
 package com.example.spring_boot_blog_application.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Account {
     private String firstName;
     private String lastName;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "account")
     private List<Post> posts;
 
