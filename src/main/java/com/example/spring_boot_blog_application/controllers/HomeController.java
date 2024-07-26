@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class HomeController {
 
     private final PostService postService;
@@ -19,11 +19,11 @@ public class HomeController {
         this.postService = postService;
     }
 
-    @GetMapping ("/")
-    public String home(Model model) {
+    @GetMapping("/")
+    public List<Post> home(Model model) {
         List<Post> posts = postService.getAll();
         model.addAttribute("posts", posts);
-        return "home";
+        return posts;
     }
 
 }

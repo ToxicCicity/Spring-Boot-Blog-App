@@ -10,11 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class AccountController {
 
     private final AccountService accountService;
@@ -27,16 +28,16 @@ public class AccountController {
     }
 
     @GetMapping("/account/{id}/posts")
-     public String getAccount(@PathVariable Long id, Model model) {
+     public List<Post> getAccount(@PathVariable Long id, Model model) {
          Optional<Account> optionalAccount = accountService.getById(id);
          if(optionalAccount.isPresent()) {
              Account account = optionalAccount.get();
              model.addAttribute("account", account);
              List<Post> posts = postService.getAllByAccountId(id);
              model.addAttribute("posts", posts);
-             return "account";
+             return posts;
          } else {
-             return "404";
+                return null;
          }
      }
 
