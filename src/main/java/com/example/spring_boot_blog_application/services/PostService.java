@@ -2,7 +2,6 @@ package com.example.spring_boot_blog_application.services;
 
 import com.example.spring_boot_blog_application.models.Post;
 import com.example.spring_boot_blog_application.repositories.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,12 +29,12 @@ public class PostService {
         return postRepository.findAllByAccountId(accountId);
     }
 
-    public Post save(Post post) {
+    public void save(Post post) {
         if(post.getId() == null) {
             post.setCreatedAt(LocalDateTime.now());
         }
         post.setUpdatedAt(LocalDateTime.now());
-        return postRepository.save(post);
+        postRepository.save(post);
     }
 
     public void delete(Post post) {
