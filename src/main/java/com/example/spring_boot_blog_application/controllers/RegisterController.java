@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashSet;
 import java.util.Set;
 
-@RestController
+@Controller
 public class RegisterController {
 
     private final AccountService accountService;

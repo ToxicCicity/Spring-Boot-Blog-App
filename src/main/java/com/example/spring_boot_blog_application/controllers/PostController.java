@@ -26,15 +26,16 @@ public class PostController {
         this.accountService = accountService;
     }
 
+    //returns a post by id
     @GetMapping("/posts/{id}")
-    public String getPost(@PathVariable Long id, Model model) {
+    public Post getPost(@PathVariable Long id, Model model) {
         Optional<Post> optionalPost = postService.getById(id);
         if(optionalPost.isPresent()) {
             Post post = optionalPost.get();
             model.addAttribute("post", post);
-            return "post";
+            return post;
         } else {
-            return "404";
+            return null;
         }
     }
 
@@ -59,18 +60,20 @@ public class PostController {
 //        return "redirect:/posts/" + post.getId();
 //    }
 
+    //gets endpoint /posts/new and returns a new post object
     @GetMapping("/posts/new")
     @PreAuthorize("isAuthenticated()")
-    public String createNewPost(Model model) {
+    public Post createNewPost(Model model) {
 
         Post post = new Post();
         model.addAttribute("post", post);
-        return "post_new";
+        return post;
     }
 
+    //posts endpoint /posts/new and creates a new post bound to the authenticated user
     @PostMapping("/posts/new")
     @PreAuthorize("isAuthenticated()")
-    public String createNewPost(@ModelAttribute Post post, Principal principal) {
+    public Post createNewPost(@ModelAttribute Post post, Principal principal) {
         String authUsername = "anonymousUser";
         if (principal != null) {
             authUsername = principal.getName();
@@ -80,12 +83,13 @@ public class PostController {
 
         post.setAccount(account);
         postService.save(post);
-        return "redirect:/";
+        return post;
     }
 
+    //gets endpoint /posts/{id}/edit and returns a post object for editing by the authenticated user
     @GetMapping("/posts/{id}/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
-    public String getPostForEdit(@PathVariable Long id, Model model) {
+    public Post getPostForEdit(@PathVariable Long id, Model model) {
 
         // find post by id
         Optional<Post> optionalPost = postService.getById(id);
@@ -93,15 +97,16 @@ public class PostController {
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             model.addAttribute("post", post);
-            return "post_edit";
+            return post;
         } else {
-            return "404";
+            return null;
         }
     }
 
+    //posts endpoint /posts/{id} and updates the post with the new data
     @PostMapping("/posts/{id}")
     @PreAuthorize(" hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
-    public String updatePost(@PathVariable Long id, Post post, BindingResult bindingResult, Model model) {
+    public Post updatePost(@PathVariable Long id, Post post, BindingResult bindingResult, Model model) {
 
         Optional<Post> optionalPost = postService.getById(id);
         if (optionalPost.isPresent()) {
@@ -111,11 +116,12 @@ public class PostController {
             existingPost.setBody(post.getBody());
 
             postService.save(existingPost);
+            return existingPost;
         }
-
-        return "redirect:/posts/" + post.getId();
+        return null;
     }
 
+    //gets endpoint /posts/{id}/delete and deletes the post if the authenticated user is the owner or an admin
     @GetMapping("/posts/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public String deletePost(@PathVariable Long id) {
@@ -126,9 +132,9 @@ public class PostController {
             Post post = optionalPost.get();
 
             postService.delete(post);
-            return "redirect:/";
+            return "post deleted";
         } else {
-            return "404";
+            return "404 post not found";
         }
     }
 
