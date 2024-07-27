@@ -67,7 +67,7 @@ public class WebSecurityConfig {
 
         http.httpBasic(Customizer.withDefaults());
 
-        // TODO: h2-console'dan ayrılınca bunları sil
+        // TODO: h2-console'dan ayrılınca bunları sil (niye yazmisim ki?)
         http.csrf(AbstractHttpConfigurer::disable);
         http.headers(AbstractHttpConfigurer::disable);
         //http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)); bir üstteki sanki daha iyi oldu

@@ -30,6 +30,7 @@ public class SeedData implements CommandLineRunner {
         this.authorityRepository = authorityRepository;
     }
 
+    // This method will run when the application starts and will create some seed data if there is no data in the database
     @Override
     public void run(String... args) throws Exception {
         List<Post> posts = postService.getAll();

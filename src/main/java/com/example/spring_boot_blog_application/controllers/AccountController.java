@@ -27,6 +27,7 @@ public class AccountController {
         this.postService = postService;
     }
 
+    //account profile page
     @GetMapping("/account/{id}/posts")
      public List<Post> getAccount(@PathVariable Long id, Model model) {
          Optional<Account> optionalAccount = accountService.getById(id);

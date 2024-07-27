@@ -19,6 +19,7 @@ public class HomeController {
         this.postService = postService;
     }
 
+    //home page
     @GetMapping("/")
     public List<Post> home(Model model) {
         List<Post> posts = postService.getAll();
