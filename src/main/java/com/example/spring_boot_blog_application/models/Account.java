@@ -25,6 +25,7 @@ public class Account {
     private String firstName;
     private String lastName;
 
+    //TODO: Comment out the following lines
     @JsonManagedReference // Prevents infinite recursion
     @OneToMany(mappedBy = "account")
     private List<Post> posts;

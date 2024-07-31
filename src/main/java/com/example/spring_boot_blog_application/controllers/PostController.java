@@ -15,6 +15,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @RestController
+//TODO: @RequestMapping("/posts") degistirmek icin
 public class PostController {
 
     private final PostService postService;

@@ -31,6 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         Account account = optionalAccount.get();
 
+        //TODO: Add enums later, research GrantedAuthority and SimpleGrantedAuthority
         List<GrantedAuthority> grantedAuthorities = account
                 .getAuthorities()
                 .stream()

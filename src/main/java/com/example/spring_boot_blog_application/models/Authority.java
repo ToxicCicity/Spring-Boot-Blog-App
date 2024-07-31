@@ -15,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Authority implements Serializable {
 
+    //TODO: Add enums later
     @Id
     @Column(length = 16)
     private String name;
