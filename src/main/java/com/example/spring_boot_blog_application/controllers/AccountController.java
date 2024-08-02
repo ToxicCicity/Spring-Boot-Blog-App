@@ -20,27 +20,28 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    private final PostService postService;
-
-    public AccountController(AccountService accountService, PostService postService) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
-        this.postService = postService;
     }
 
-    //account profile page
-    @GetMapping("/account/{id}/posts")
-     public List<Post> getAccount(@PathVariable Long id, Model model) {
-         Optional<Account> optionalAccount = accountService.getById(id);
-         if(optionalAccount.isPresent()) {
-             Account account = optionalAccount.get();
-             model.addAttribute("account", account);
-             List<Post> posts = postService.getAllByAccountId(id);
-             model.addAttribute("posts", posts);
-             return posts;
-         } else {
-                return null;
-         }
-     }
+    //old account profile page method, replaced with the one below
+//    @GetMapping("/account/{id}/posts")
+//     public List<Post> getAccount(@PathVariable Long id, Model model) {
+//         Optional<Account> optionalAccount = accountService.getById(id);
+//         if(optionalAccount.isPresent()) {
+//             Account account = optionalAccount.get();
+//             model.addAttribute("account", account);
+//             List<Post> posts = postService.getAllByAccountId(id);
+//             model.addAttribute("posts", posts);
+//             return posts;
+//         } else {
+//                return null;
+//         }
+//     }
 
+    @GetMapping("/account/{id}/posts")
+    public List<Post> getAccount(@PathVariable Long id, Model model) {
+        return accountService.getAllPostsOfAccount(id, model);
+    }
 
 }
