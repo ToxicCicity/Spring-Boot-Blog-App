@@ -25,7 +25,7 @@ public class Account {
     private String firstName;
     private String lastName;
 
-    //TODO: Comment out the following lines
+    //TODO: Find a way to safely comment out the following lines (WARNING: commenting this out breaks account.getPosts() in AccountService.java)
     @JsonManagedReference // Prevents infinite recursion
     @OneToMany(mappedBy = "account")
     private List<Post> posts;
