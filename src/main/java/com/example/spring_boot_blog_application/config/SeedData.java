@@ -6,10 +6,8 @@ import com.example.spring_boot_blog_application.models.Post;
 import com.example.spring_boot_blog_application.repositories.AuthorityRepository;
 import com.example.spring_boot_blog_application.services.AccountService;
 import com.example.spring_boot_blog_application.services.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.HashSet;
 import java.util.List;

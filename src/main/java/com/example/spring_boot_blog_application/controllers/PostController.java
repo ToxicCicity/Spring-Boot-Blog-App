@@ -1,18 +1,13 @@
 package com.example.spring_boot_blog_application.controllers;
 
-import com.example.spring_boot_blog_application.models.Account;
 import com.example.spring_boot_blog_application.models.Post;
-import com.example.spring_boot_blog_application.services.AccountService;
 import com.example.spring_boot_blog_application.services.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
@@ -20,24 +15,14 @@ public class PostController {
 
     private final PostService postService;
 
-    private final AccountService accountService;
-
-    public PostController(PostService postService, AccountService accountService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.accountService = accountService;
     }
 
     //returns a post by id
     @GetMapping("/{id}")
     public Post getPost(@PathVariable Long id, Model model) {
-        Optional<Post> optionalPost = postService.getById(id);
-        if(optionalPost.isPresent()) {
-            Post post = optionalPost.get();
-            model.addAttribute("post", post);
-            return post;
-        } else {
-            return null;
-        }
+        return postService.getPost(id, model);
     }
 
     //old createNewPost and saveNewPost methods, replaced with the ones below (was causing every post to be created by the same user)
@@ -75,68 +60,28 @@ public class PostController {
     @PostMapping("/new")
     @PreAuthorize("isAuthenticated()")
     public Post createNewPost(@ModelAttribute Post post, Principal principal) {
-        String authUsername = "anonymousUser";
-        if (principal != null) {
-            authUsername = principal.getName();
-        }
-
-        Account account = accountService.findByEmail(authUsername).orElseThrow(() -> new IllegalArgumentException("Account not found"));
-
-        post.setAccount(account);
-        postService.save(post);
-        return post;
+        return postService.createNewPost(post, principal);
     }
 
     //gets endpoint /posts/{id}/edit and returns a post object for editing by the authenticated user
     @GetMapping("/{id}/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public Post getPostForEdit(@PathVariable Long id, Model model) {
-
-        // find post by id
-        Optional<Post> optionalPost = postService.getById(id);
-        // if post exist put it in model
-        if (optionalPost.isPresent()) {
-            Post post = optionalPost.get();
-            model.addAttribute("post", post);
-            return post;
-        } else {
-            return null;
-        }
+        return postService.getPostForEdit(id, model);
     }
 
     //posts endpoint /posts/{id} and updates the post with the new data
     @PostMapping("/{id}")
     @PreAuthorize(" hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public Post updatePost(@PathVariable Long id, Post post, BindingResult bindingResult, Model model) {
-
-        Optional<Post> optionalPost = postService.getById(id);
-        if (optionalPost.isPresent()) {
-            Post existingPost = optionalPost.get();
-
-            existingPost.setTitle(post.getTitle());
-            existingPost.setBody(post.getBody());
-
-            postService.save(existingPost);
-            return existingPost;
-        }
-        return null;
+        return postService.updatePost(id, post);
     }
 
     //gets endpoint /posts/{id}/delete and deletes the post if the authenticated user is the owner or an admin
     @GetMapping("/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public String deletePost(@PathVariable Long id) {
-
-        // find post by id
-        Optional<Post> optionalPost = postService.getById(id);
-        if (optionalPost.isPresent()) {
-            Post post = optionalPost.get();
-
-            postService.delete(post);
-            return "post deleted";
-        } else {
-            return "404 post not found";
-        }
+        return postService.deletePost(id);
     }
 
 

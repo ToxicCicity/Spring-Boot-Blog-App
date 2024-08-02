@@ -1,7 +1,6 @@
 package com.example.spring_boot_blog_application.services;
 
 import com.example.spring_boot_blog_application.models.Account;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

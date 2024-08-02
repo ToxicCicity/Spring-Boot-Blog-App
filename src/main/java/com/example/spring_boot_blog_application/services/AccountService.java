@@ -45,7 +45,4 @@ public class AccountService {
         return accountRepository.findOneByEmail(email);
     }
 
-    public Optional<Account> getById(Long id) {
-        return accountRepository.findById(id);
-    }
 }
