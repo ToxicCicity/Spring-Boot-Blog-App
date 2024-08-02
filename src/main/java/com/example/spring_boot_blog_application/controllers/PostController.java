@@ -15,7 +15,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @RestController
-//TODO: @RequestMapping("/posts") degistirmek icin
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -28,7 +28,7 @@ public class PostController {
     }
 
     //returns a post by id
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public Post getPost(@PathVariable Long id, Model model) {
         Optional<Post> optionalPost = postService.getById(id);
         if(optionalPost.isPresent()) {
@@ -62,7 +62,7 @@ public class PostController {
 //    }
 
     //gets endpoint /posts/new and returns a new post object
-    @GetMapping("/posts/new")
+    @GetMapping("/new")
     @PreAuthorize("isAuthenticated()")
     public Post createNewPost(Model model) {
 
@@ -72,7 +72,7 @@ public class PostController {
     }
 
     //posts endpoint /posts/new and creates a new post bound to the authenticated user
-    @PostMapping("/posts/new")
+    @PostMapping("/new")
     @PreAuthorize("isAuthenticated()")
     public Post createNewPost(@ModelAttribute Post post, Principal principal) {
         String authUsername = "anonymousUser";
@@ -88,7 +88,7 @@ public class PostController {
     }
 
     //gets endpoint /posts/{id}/edit and returns a post object for editing by the authenticated user
-    @GetMapping("/posts/{id}/edit")
+    @GetMapping("/{id}/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public Post getPostForEdit(@PathVariable Long id, Model model) {
 
@@ -105,7 +105,7 @@ public class PostController {
     }
 
     //posts endpoint /posts/{id} and updates the post with the new data
-    @PostMapping("/posts/{id}")
+    @PostMapping("/{id}")
     @PreAuthorize(" hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public Post updatePost(@PathVariable Long id, Post post, BindingResult bindingResult, Model model) {
 
@@ -123,7 +123,7 @@ public class PostController {
     }
 
     //gets endpoint /posts/{id}/delete and deletes the post if the authenticated user is the owner or an admin
-    @GetMapping("/posts/{id}/delete")
+    @GetMapping("/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
     public String deletePost(@PathVariable Long id) {
 
