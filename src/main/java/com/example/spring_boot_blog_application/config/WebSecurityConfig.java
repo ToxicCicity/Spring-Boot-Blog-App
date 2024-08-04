@@ -31,7 +31,7 @@ public class WebSecurityConfig {
         "/register",
         "/h2-console/*",
         "/",
-        "/account/*/posts"
+        "/account*"
     };
 
     @Bean
