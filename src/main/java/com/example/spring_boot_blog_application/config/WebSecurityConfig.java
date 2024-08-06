@@ -3,6 +3,7 @@ package com.example.spring_boot_blog_application.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,9 +23,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
-    @Bean
-    public static PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+//    @Bean
+//    public static PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
+
+    private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public WebSecurityConfig(AuthenticationProvider authenticationProvider, JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.authenticationProvider = authenticationProvider;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     private static final String[] WHITELIST = {
@@ -41,6 +50,8 @@ public class WebSecurityConfig {
                     .requestMatchers(WHITELIST).permitAll()
                     .requestMatchers(HttpMethod.GET,"/posts/*").permitAll()
                     .anyRequest().authenticated()
+                    //session managment eklemeyi denedim ama methodlarin bazilari deprecated olmus
+                    //bazilari ise bulunmuyor, burada yardim istiyorum
             );
 
         http
