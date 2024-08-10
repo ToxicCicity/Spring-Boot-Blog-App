@@ -43,7 +43,7 @@ public class JwtService {
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
-            long expiration
+            long jwtExpiration
     ) {
         var authorities = userDetails.getAuthorities()
                 .stream()
