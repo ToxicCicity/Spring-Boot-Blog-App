@@ -10,4 +10,17 @@ public class SpringBootBlogApplication {
 		SpringApplication.run(SpringBootBlogApplication.class, args);
 	}
 
+//	@Bean
+//	public CommandLineRunner runner(AuthorityRepository authorityRepository){
+//		return args -> {
+//			if (authorityRepository.findByName("ROLE_USER").isEmpty()) {
+//				authorityRepository.save(
+//						Authority.builder()
+//								.name("ROLE_USER")
+//								.build()
+//				);
+//			}
+//		};
+//	}
+
 }

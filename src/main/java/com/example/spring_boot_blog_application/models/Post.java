@@ -1,6 +1,7 @@
 package com.example.spring_boot_blog_application.models;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Post {
 
     private LocalDateTime updatedAt;
 
+    @JsonBackReference // Prevents infinite recursion
     @NotNull
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
