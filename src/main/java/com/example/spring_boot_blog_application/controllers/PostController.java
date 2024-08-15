@@ -4,7 +4,6 @@ import com.example.spring_boot_blog_application.models.Post;
 import com.example.spring_boot_blog_application.services.PostService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -73,7 +72,7 @@ public class PostController {
     //posts endpoint /posts/{id} and updates the post with the new data
     @PostMapping("/{id}")
     @PreAuthorize(" hasRole('ROLE_ADMIN') or @postService.getById(#id).get().getAccount().getEmail() == principal.username")
-    public Post updatePost(@PathVariable Long id, Post post, BindingResult bindingResult, Model model) {
+    public Post updatePost(@PathVariable Long id, Post post) {
         return postService.updatePost(id, post);
     }
 
